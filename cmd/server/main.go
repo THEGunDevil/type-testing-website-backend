@@ -110,7 +110,7 @@ func (s *Server) setupRoutes() {
 		DB:         s.dbQueries,
 		JWTManager: s.jwt,
 	}
-	s.router.GET("/", func(c *gin.Context) {
+	s.router.GET("", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Welcome to TypeType API",
 		})
@@ -133,5 +133,15 @@ func (s *Server) setupRoutes() {
 	users := s.router.Group("/user")
 	{
 		users.GET("/me", middleware.AuthMiddleware(s.jwt), userHandler.GetUser)
+	}
+	stats := s.router.Group("/stats")
+	{
+		stats.GET("", middleware.AuthMiddleware(s.jwt), userHandler.GetStats)
+		stats.POST("", middleware.AuthMiddleware(s.jwt), userHandler.CreateStats)
+	}
+	passage := s.router.Group("/passage")
+	{
+		passage.GET("", userHandler.GetPassage)
+		// stats.POST("", middleware.AuthMiddleware(s.jwt), userHandler.CreateStats)
 	}
 }

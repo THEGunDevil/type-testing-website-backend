@@ -11,9 +11,13 @@ import (
 )
 
 type Querier interface {
+	CreatePassage(ctx context.Context, arg CreatePassageParams) (Passage, error)
+	CreateTestResult(ctx context.Context, arg CreateTestResultParams) (TestResult, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error)
+	GetRandomPassage(ctx context.Context, language string) (Passage, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserByID(ctx context.Context, id pgtype.UUID) (User, error)
+	GetUserStats(ctx context.Context, userID pgtype.UUID) ([]TestResult, error)
 	IncrementTokenVersion(ctx context.Context, id pgtype.UUID) (int32, error)
 }
 

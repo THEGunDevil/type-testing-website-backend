@@ -2,7 +2,6 @@ package models
 
 import (
 	"time"
-
 	"github.com/google/uuid"
 )
 
@@ -17,6 +16,17 @@ type User struct {
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
+
+type RegistrationRequest struct {
+	UserName string `json:"user_name" binding:"required,min=6,max=8"`
+	Email    string `json:"email" binding:"required,email,max=254"`
+	Password string `json:"password" binding:"required,min=8,max=12"`
+}
+type LogInRequest struct {
+	Email    string `json:"email" binding:"required,email,max=254"`
+	Password string `json:"password" binding:"required,min=8,max=12"`
+}
+
 type UserResponse struct {
 	UserName  string `json:"user_name"`
 	Role      string `json:"role"`

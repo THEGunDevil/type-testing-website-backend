@@ -4,11 +4,15 @@ CREATE TABLE test_results (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     passage_id UUID REFERENCES passages(id) ON DELETE SET NULL,
-    wpm REAL NOT NULL,
+    title TEXT NOT NULL,
+    wpm REAL NOT NULL CHECK (wpm >= 0),
+    raw_wpm REAL NOT NULL CHECK (raw_wpm >= 0),
     accuracy REAL NOT NULL CHECK (accuracy BETWEEN 0 AND 100),
-    duration_s INT NOT NULL,
-    mistakes INT NOT NULL DEFAULT 0,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    duration_s INT NOT NULL CHECK (duration_s > 0),
+    correct_words INT NOT NULL DEFAULT 0,
+    correct_characters INT NOT NULL DEFAULT 0,
+    incorrect_characters INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX idx_test_results_user ON test_results (user_id, created_at DESC);

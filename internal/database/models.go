@@ -8,6 +8,35 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type Leaderboard struct {
+	UserID      pgtype.UUID `json:"user_id"`
+	UserName    string      `json:"user_name"`
+	BestWpm     interface{} `json:"best_wpm"`
+	AvgAccuracy float64     `json:"avg_accuracy"`
+}
+
+type Passage struct {
+	ID        pgtype.UUID      `json:"id"`
+	Content   string           `json:"content"`
+	Language  string           `json:"language"`
+	CreatedAt pgtype.Timestamp `json:"created_at"`
+}
+
+type TestResult struct {
+	ID                  pgtype.UUID        `json:"id"`
+	UserID              pgtype.UUID        `json:"user_id"`
+	PassageID           pgtype.UUID        `json:"passage_id"`
+	Title               string             `json:"title"`
+	Wpm                 float32            `json:"wpm"`
+	RawWpm              float32            `json:"raw_wpm"`
+	Accuracy            float32            `json:"accuracy"`
+	DurationS           int32              `json:"duration_s"`
+	CorrectWords        int32              `json:"correct_words"`
+	CorrectCharacters   int32              `json:"correct_characters"`
+	IncorrectCharacters int32              `json:"incorrect_characters"`
+	CreatedAt           pgtype.Timestamptz `json:"created_at"`
+}
+
 type User struct {
 	ID           pgtype.UUID      `json:"id"`
 	UserName     string           `json:"user_name"`

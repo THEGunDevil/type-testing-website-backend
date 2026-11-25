@@ -14,18 +14,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+
 type UserHandler struct {
 	DB         *database.Queries // Receives the universal query wrapper
 	JWTManager *jwt.JWTManager
 }
-type RegistrationRequest struct {
-	UserName string `json:"user_name" binding:"required,min=6,max=8"`
-	Email    string `json:"email" binding:"required,email,max=254"`
-	Password string `json:"password" binding:"required,min=8,max=12"`
-}
-
 func (h *UserHandler) Register(c *gin.Context) {
-	var req RegistrationRequest
+	var req models.RegistrationRequest
 
 	// 1. Bind and Validate JSON payload
 	err := c.ShouldBindJSON(&req)
@@ -65,13 +60,9 @@ func (h *UserHandler) Register(c *gin.Context) {
 	})
 }
 
-type LogInRequest struct {
-	Email    string `json:"email" binding:"required,email,max=254"`
-	Password string `json:"password" binding:"required,min=8,max=12"`
-}
 
 func (h *UserHandler) LogIn(c *gin.Context) {
-	var req LogInRequest
+	var req models.LogInRequest
 
 	// 1. Bind and Validate JSON payload
 	err := c.ShouldBindJSON(&req)
@@ -281,7 +272,7 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 	}
 
 	user, err := h.DB.GetUserByID(
-		c.Request.Context(),
+		c,
 		pgtype.UUID{
 			Bytes: userUUID,
 			Valid: true,
