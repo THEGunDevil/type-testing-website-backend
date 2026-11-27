@@ -90,8 +90,23 @@ func (h *UserHandler) GetStats(c *gin.Context) {
 		})
 		return
 	}
+	statsResponse := make([]models.Stat, 0, len(stats))
+
+	for _, stat := range stats {
+		statsResponse = append(statsResponse, models.Stat{
+			Title:               stat.Title,
+			WPM:                 float64(stat.Wpm),
+			RawWPM:              float64(stat.RawWpm),
+			Accuracy:            float64(stat.Accuracy),
+			DurationSeconds:     stat.DurationS,
+			CorrectWords:        stat.CorrectWords,
+			CorrectCharacters:   stat.CorrectCharacters,
+			IncorrectCharacters: stat.IncorrectCharacters,
+			CreatedAt: stat.CreatedAt.Time,
+		})
+	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"stats": stats,
+		"stats": statsResponse,
 	})
 }
