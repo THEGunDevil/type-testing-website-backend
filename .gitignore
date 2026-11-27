@@ -1,3 +1,4 @@
 .env.*
 dev.ps1
 prod.ps1
+seed
